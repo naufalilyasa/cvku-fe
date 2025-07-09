@@ -2,7 +2,7 @@ import type { FormExperiencesType } from "@/types/formType";
 import type { ZodType } from "zod";
 import { z } from "zod";
 
-export const FormExperiencesSchema: ZodType<FormExperiencesType> = z.object({
+export const formExperiencesSchema: ZodType<FormExperiencesType> = z.object({
   description: z.string().min(1, "Deskripsi wajib diisi"),
   experiences: z
     .array(
@@ -74,4 +74,4 @@ export const FormExperiencesSchema: ZodType<FormExperiencesType> = z.object({
     .optional(),
 });
 
-export type ExperiencesDTO = z.infer<typeof FormExperiencesSchema>;
+export type ExperiencesDTO = z.infer<typeof formExperiencesSchema>;
