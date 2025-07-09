@@ -34,7 +34,7 @@ import {
   type PersonalDetailsDTO,
 } from "@/schema/formPersonalDetailsSchema";
 
-function FormPersonalDetail() {
+function FormPersonalDetails() {
   const { data, setData } = usePersonalDetailsStore();
   const [preview, setPreview] = useState<string | null>(null);
   const [fileKey, setFileKey] = useState(Date.now());
@@ -469,4 +469,4 @@ function FormPersonalDetail() {
   );
 }
 
-export default FormPersonalDetail;
+export default FormPersonalDetails;
