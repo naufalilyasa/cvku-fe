@@ -24,7 +24,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import {
-  FormExperiencesSchema,
+  formExperiencesSchema,
   type ExperiencesDTO,
 } from "@/schema/formExperiencesSchema";
 import { useExperiencesStore } from "@/stores/experiencesStore";
@@ -42,7 +42,7 @@ function FormExperiences() {
   const navigate = useNavigate();
 
   const form = useForm<ExperiencesDTO>({
-    resolver: zodResolver(FormExperiencesSchema),
+    resolver: zodResolver(formExperiencesSchema),
     defaultValues: data
       ? {
           ...data,

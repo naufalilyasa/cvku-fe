@@ -30,7 +30,7 @@ import ImagePreview from "@/components/FormPersonalDetails/ImagePreview";
 import toBase64 from "@/utils/toBase64";
 import { id } from "date-fns/locale";
 import {
-  FormPersonalDetailsSchema,
+  formPersonalDetailsSchema,
   type PersonalDetailsDTO,
 } from "@/schema/formPersonalDetailsSchema";
 
@@ -40,7 +40,7 @@ function FormPersonalDetails() {
   const [fileKey, setFileKey] = useState(Date.now());
 
   const form = useForm<PersonalDetailsDTO>({
-    resolver: zodResolver(FormPersonalDetailsSchema),
+    resolver: zodResolver(formPersonalDetailsSchema),
     defaultValues: data ?? {
       firstName: "",
       lastName: "",
