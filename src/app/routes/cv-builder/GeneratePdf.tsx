@@ -14,7 +14,7 @@ function GeneratePdf() {
   const currentStyle = template === 1 ? cvStyle1 : cvStyle2;
 
   return (
-    <section className="flex flex-col items-center justify-center mt-5 gap-4">
+    <section className="flex flex-col items-center justify-center mt-5 gap-4 mb-10">
       <div className="flex justify-between items-center w-[50%]">
         <h1 className="text-4xl font-medium py-5">Preview CV</h1>
         <div className="flex items-center gap-2">
