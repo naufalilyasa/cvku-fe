@@ -1,7 +1,7 @@
 import type { FormPersonalDetailsType } from "@/types/formType";
 import { z, ZodType } from "zod";
 
-export const FormPersonalDetailSchema: ZodType<FormPersonalDetailsType> =
+export const FormPersonalDetailsSchema: ZodType<FormPersonalDetailsType> =
   z.object({
     firstName: z
       .string()
@@ -45,4 +45,4 @@ export const FormPersonalDetailSchema: ZodType<FormPersonalDetailsType> =
       .nonempty({ message: "Marital status is required" }),
   });
 
-export type PersonalDetailDTO = z.infer<typeof FormPersonalDetailSchema>;
+export type PersonalDetailsDTO = z.infer<typeof FormPersonalDetailsSchema>;

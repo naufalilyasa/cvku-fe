@@ -30,8 +30,8 @@ import ImagePreview from "@/components/FormPersonalDetails/ImagePreview";
 import toBase64 from "@/utils/toBase64";
 import { id } from "date-fns/locale";
 import {
-  FormPersonalDetailSchema,
-  type PersonalDetailDTO,
+  FormPersonalDetailsSchema,
+  type PersonalDetailsDTO,
 } from "@/schema/formPersonalDetailsSchema";
 
 function FormPersonalDetail() {
@@ -39,8 +39,8 @@ function FormPersonalDetail() {
   const [preview, setPreview] = useState<string | null>(null);
   const [fileKey, setFileKey] = useState(Date.now());
 
-  const form = useForm<PersonalDetailDTO>({
-    resolver: zodResolver(FormPersonalDetailSchema),
+  const form = useForm<PersonalDetailsDTO>({
+    resolver: zodResolver(FormPersonalDetailsSchema),
     defaultValues: data ?? {
       firstName: "",
       lastName: "",
@@ -65,7 +65,7 @@ function FormPersonalDetail() {
     reset,
   } = form;
 
-  function onSubmit(values: PersonalDetailDTO) {
+  function onSubmit(values: PersonalDetailsDTO) {
     if (!values) return;
     setData(values);
     navigate("/cv-builder/experiences");

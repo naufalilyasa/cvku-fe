@@ -1,5 +1,5 @@
 import type { ExperiencesDTO } from "@/schema/formExperiencesSchema";
-import type { PersonalDetailDTO } from "@/schema/formPersonalDetailsSchema";
+import type { PersonalDetailsDTO } from "@/schema/formPersonalDetailsSchema";
 
 export interface FormPersonalDetailsType {
   firstName: string;
@@ -58,8 +58,8 @@ export interface ProjectType {
 
 // This interface is used to store the form data in a global state or context
 export interface FormPersonalDetailsStore {
-  data: PersonalDetailDTO;
-  setData: (data: PersonalDetailDTO) => void;
+  data: PersonalDetailsDTO;
+  setData: (data: PersonalDetailsDTO) => void;
 }
 
 export interface FormExperiencesStore {
