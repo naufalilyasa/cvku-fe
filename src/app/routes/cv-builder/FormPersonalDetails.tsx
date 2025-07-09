@@ -1,4 +1,3 @@
-import InputFileImage from "@/components/input-12";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,10 +15,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  FormPersonalDetailSchema,
-  type PersonalDetailDTO,
-} from "@/schema/FormPersonalDetailsSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Popover, PopoverContent } from "@/components/ui/popover";
@@ -30,22 +25,64 @@ import { format } from "date-fns";
 import { usePersonalDetailsStore } from "@/stores/personalDetailsStore";
 import { useNavigate } from "react-router";
 import { Calendar } from "@/components/ui/calendar";
-// import { DropdownCalendar } from "@/components/DropdownCalendar";
+import { useEffect, useState } from "react";
+import ImagePreview from "@/components/FormPersonalDetails/ImagePreview";
+import {
+  FormPersonalDetailSchema,
+  type PersonalDetailDTO,
+} from "@/schema/formPersonalDetailsSchema";
+import toBase64 from "@/utils/toBase64";
+import { id } from "date-fns/locale";
 
 function FormPersonalDetail() {
-  const { setData } = usePersonalDetailsStore();
+  const { data, setData } = usePersonalDetailsStore();
+  const [preview, setPreview] = useState<string | null>(null);
+  const [fileKey, setFileKey] = useState(Date.now());
 
   const form = useForm<PersonalDetailDTO>({
     resolver: zodResolver(FormPersonalDetailSchema),
+    defaultValues: data ?? {
+      firstName: "",
+      lastName: "",
+      imageProfile: undefined,
+      email: "",
+      phoneNumber: "",
+      address: "",
+      postalCode: "",
+      city: "",
+      birthDate: null,
+      birthPlace: "",
+      linkedinUrl: "",
+      websiteUrl: "",
+      maritalStatus: "",
+      nationality: "",
+    },
   });
   const navigate = useNavigate();
 
+  const {
+    formState: { isSubmitSuccessful },
+    reset,
+  } = form;
+
   function onSubmit(values: PersonalDetailDTO) {
     if (!values) return;
-    // console.log(values);
     setData(values);
-    navigate("/cv-builder/generate-pdf");
+    navigate("/cv-builder/experiences");
   }
+
+  useEffect(() => {
+    if (data?.imageProfile) {
+      setPreview(data.imageProfile);
+    }
+  }, [data?.imageProfile]);
+
+  useEffect(() => {
+    if (!isSubmitSuccessful) return;
+    reset();
+    setFileKey(Date.now());
+    setPreview(null);
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <>
@@ -61,18 +98,59 @@ function FormPersonalDetail() {
               <CardHeader>
                 <div className="flex flex-col border-b-1 w-full py-5">
                   <CardTitle>Detail Pribadi</CardTitle>
-                  {/* <img src={} className="size-500" alt="" /> */}
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-4">
                   <div className="flex w-full items-center gap-4">
-                    {/* <FormField
-                      control={form.control}
-                      name="imgUrl"
-                      render={({ field }) => <InputFileImage />}
-                    /> */}
-                    <InputFileImage />
+                    <div>
+                      <FormField
+                        control={form.control}
+                        name="imageProfile"
+                        render={({ field: { onChange, ref } }) => (
+                          <FormItem>
+                            <Label htmlFor="imageProfile" className="w-full">
+                              <div className="flex flex-col gap-2">
+                                <span>Foto Profil</span>
+                                <ImagePreview
+                                  url={preview}
+                                  onRemove={() => {
+                                    setPreview(null);
+                                    setFileKey(Date.now());
+                                    onChange(undefined);
+
+                                    setData({
+                                      ...form.getValues(),
+                                      imageProfile: undefined,
+                                    });
+                                  }}
+                                />
+                              </div>
+                            </Label>
+                            <FormControl>
+                              <Input
+                                id="imageProfile"
+                                key={fileKey}
+                                ref={ref}
+                                type="file"
+                                onChange={async (e) => {
+                                  const file = e.target.files?.[0];
+                                  if (!file) return;
+
+                                  const base64 = await toBase64(file);
+                                  setPreview(base64);
+                                  onChange(base64);
+                                }}
+                                accept="image/*"
+                                className="hidden"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
                     <div className="flex flex-col w-full p-3 space-y-4">
                       <div className="flex flex-col space-y-1.5">
                         <FormField
@@ -235,7 +313,9 @@ function FormPersonalDetail() {
                                         )}
                                       >
                                         {field.value ? (
-                                          format(field.value, "PPP")
+                                          format(field.value, "PPP", {
+                                            locale: id,
+                                          })
                                         ) : (
                                           <span>Pick a date</span>
                                         )}
@@ -252,7 +332,7 @@ function FormPersonalDetail() {
                                       selected={field.value}
                                       onSelect={field.onChange}
                                       disabled={(date) =>
-                                        date > new Date() ||
+                                        date > new Date("2010-01-01") ||
                                         date < new Date("1900-01-01")
                                       }
                                       captionLayout="dropdown"
@@ -285,6 +365,50 @@ function FormPersonalDetail() {
                           )}
                         />
                       </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-5">
+                    <div className="flex flex-col space-y-1.5">
+                      <FormField
+                        control={form.control}
+                        name="nationality"
+                        render={({ field }) => (
+                          <FormItem>
+                            <Label htmlFor="url-linkedin">Kebangsaan</Label>
+                            <FormControl>
+                              <Input
+                                placeholder=""
+                                id="nationality"
+                                {...field}
+                                type="text"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="flex flex-col space-y-1.5">
+                      <FormField
+                        control={form.control}
+                        name="maritalStatus"
+                        render={({ field }) => (
+                          <FormItem>
+                            <Label htmlFor="martial-status">
+                              Status Pernikahan
+                            </Label>
+                            <FormControl>
+                              <Input
+                                placeholder=""
+                                type="text"
+                                id="martial-status"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-5">

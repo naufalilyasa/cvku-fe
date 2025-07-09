@@ -1,14 +1,18 @@
 import { create } from "zustand";
-import type { FormPersonalDetailsStore } from "@/types/formPersonalDetailsType";
-import type { PersonalDetailDTO } from "@/schema/FormPersonalDetailsSchema";
+import { persist } from "zustand/middleware";
+import type { FormPersonalDetailsStore } from "@/types/formType";
+import type { PersonalDetailDTO } from "@/schema/formPersonalDetailsSchema";
 
 export const usePersonalDetailsStore = create<FormPersonalDetailsStore>()(
-  (set) => ({
-    data: {} as PersonalDetailDTO,
-    setData: (data) => {
-      set(() => ({
-        data,
-      }));
-    },
-  })
+  persist(
+    (set) => ({
+      data: {} as PersonalDetailDTO,
+      setData: (data) => {
+        set(() => ({
+          data,
+        }));
+      },
+    }),
+    { name: "personalDetailsStore" }
+  )
 );

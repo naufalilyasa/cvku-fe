@@ -1,4 +1,4 @@
-import type { FormPersonalDetailsType } from "@/types/formPersonalDetailsType";
+import type { FormPersonalDetailsType } from "@/types/formType";
 import { z, ZodType } from "zod";
 
 export const FormPersonalDetailSchema: ZodType<FormPersonalDetailsType> =
@@ -35,6 +35,15 @@ export const FormPersonalDetailSchema: ZodType<FormPersonalDetailsType> =
       .url()
       .includes("linkedin.com", { message: "Invalid Linkedin URL" }),
     websiteUrl: z.string().url(),
+    imageProfile: z.string().optional(),
+    nationality: z
+      .string()
+      .trim()
+      .nonempty({ message: "Nationality is required" }),
+    maritalStatus: z
+      .string()
+      .trim()
+      .nonempty({ message: "Marital status is required" }),
   });
 
 export type PersonalDetailDTO = z.infer<typeof FormPersonalDetailSchema>;

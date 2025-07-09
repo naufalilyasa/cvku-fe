@@ -1,29 +1,22 @@
 import { forwardRef, type ReactNode } from "react";
-type PageType = {
+
+type PageProps = {
   children?: ReactNode;
 };
-export const Page = forwardRef<HTMLDivElement, PageType>(
-  ({ children }, ref) => {
-    return (
+
+export const Page = forwardRef<HTMLDivElement, PageProps>(({ children }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className="relative w-[796px] bg-white border border-black shadow-xl rounded-md p-8"
+      style={{ minHeight: "1122px" }} // height minimum A4
+    >
+      {/* Garis batas A4 */}
       <div
-        className="
-                w-[796px]
-                h-[1122px]
-                border-2
-                border-black
-                bg-white
-                shadow-2xl
-                ml-2
-                mt-2
-                print:shadow-none
-                print:shadow-0
-                print:ml-0
-                print:mt-0
-                rounded-md
-                "
-      >
-        <div ref={ref}>{children}</div>
-      </div>
-    );
-  }
-);
+        className="absolute left-0 right-0 border-t border-red-500"
+        style={{ top: "1122px", height: "1px" }}
+      />
+      {children}
+    </div>
+  );
+});
