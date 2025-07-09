@@ -27,12 +27,12 @@ import { useNavigate } from "react-router";
 import { Calendar } from "@/components/ui/calendar";
 import { useEffect, useState } from "react";
 import ImagePreview from "@/components/FormPersonalDetails/ImagePreview";
+import toBase64 from "@/utils/toBase64";
+import { id } from "date-fns/locale";
 import {
   FormPersonalDetailSchema,
   type PersonalDetailDTO,
 } from "@/schema/formPersonalDetailsSchema";
-import toBase64 from "@/utils/toBase64";
-import { id } from "date-fns/locale";
 
 function FormPersonalDetail() {
   const { data, setData } = usePersonalDetailsStore();

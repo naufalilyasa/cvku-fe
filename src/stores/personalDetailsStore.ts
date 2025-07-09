@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { FormPersonalDetailsStore } from "@/types/formType";
 import type { PersonalDetailDTO } from "@/schema/formPersonalDetailsSchema";
+import type { FormPersonalDetailsStore } from "@/types/formType";
 
 export const usePersonalDetailsStore = create<FormPersonalDetailsStore>()(
   persist(

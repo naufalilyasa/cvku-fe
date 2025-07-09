@@ -8,7 +8,6 @@ export const FormPersonalDetailSchema: ZodType<FormPersonalDetailsType> =
       .trim()
       .nonempty({ message: "First Name is required" }),
     lastName: z.string().trim().nonempty({ message: "Last Name is required" }),
-    // imgUrl: z.string(),
     email: z
       .string()
       .email({ message: "Email is required" })
